@@ -1,0 +1,5 @@
+Includes NavMesh components used to create and handle multiple navmeshes.
+
+Simply drag in project's "Assets" file to include.
+
+Add navmesh surface components to handle specific navmeshes.
