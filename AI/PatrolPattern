@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class PatrolPattern : MonoBehaviour
+{
+    public Transform[] waypoints; //List of waypoints for navigation
+
+    protected float distanceToWaypoint = 1.5f; //Distance at which agent validates arrival at waypoint
+    protected int nextPointIndex = 0; //Waypoint destination
+
+    protected bool reversePatrol = false;
+
+    private NavMeshAgent agent;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Vector3.Distance(transform.position, waypoints[nextPointIndex].position) < distanceToWaypoint)
+        {
+            GetNextWaypoint(); //Call of movement test procedure
+        }
+        else
+        {
+            agent.SetDestination(waypoints[nextPointIndex].position); //Continue moving towards point
+        }
+    }
+
+    void GetNextWaypoint() //Movement test procedure
+    {
+        if(reversePatrol == false)
+        {
+            nextPointIndex++; //Incrementation of waypoint index
+
+            if (nextPointIndex == waypoints.Length) //Check if agent arrived at end of path
+            {
+                reversePatrol = true;
+                //nextPointIndex = 0;
+                nextPointIndex = waypoints.Length - 1;
+            }
+        }
+        else
+        {
+            nextPointIndex--;
+
+            if(nextPointIndex == 0)
+            {
+                reversePatrol = false;
+                nextPointIndex = 0;
+            }
+        }
+        //nextPointIndex++; //Incrementation of waypoint index
+
+        
+    }
+}
